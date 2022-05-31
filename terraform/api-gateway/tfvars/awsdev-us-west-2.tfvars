@@ -1,0 +1,5 @@
+environment   = "awsdev"
+region        = "us-west-2"
+clientCertId  = "ii9c5b"
+domainName    = "api-dev.jwatch.org"
+nodeApiDomain = "jw-api.nejmgroup-dev.org"

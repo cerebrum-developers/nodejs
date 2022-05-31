@@ -1,0 +1,610 @@
+swagger: '2.0'
+info:
+  version: 3.0.2
+  title: Journal Watch API
+host: 'localhost:10011'
+basePath: /jw-api
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /search:
+    x-swagger-router-controller: v1
+    get:
+      tags:
+        - v1
+        - web-ui
+      description: >-
+        Use to perform searches for the Journal Watch website, this call will
+        only return active articles from the search-api.
+      operationId: search
+      parameters:
+        - name: query
+          in: query
+          type: string
+          description: >-
+            Formatted string containing parameters to perform the search with.
+            Example query string: "(state:active) AND (articleID:na40312)"
+          required: true
+        - name: start
+          type: number
+          in: query
+          description: >-
+            Page of our search results, each page contains at least "pageSize"
+            so if our pageSize is 25, and page is 2, we would get results of
+            26-50.
+          default: 1
+          minimum: 1
+        - name: pageLength
+          type: number
+          in: query
+          description: 'Number of results to return per page, defaults to 25.'
+          default: 25
+        - name: sort
+          type: string
+          in: query
+          description: >-
+            How to sort the article before returning the results of our search,
+            defaults to createddate.
+          default: createddate
+          enum:
+            - approvaldate
+            - createddate
+            - pubdate
+            - relevance
+        - name: order
+          type: string
+          in: query
+          description: 'Which direction to sort the article results, defaults to descending.'
+          default: descending
+          enum:
+            - ascending
+            - descending
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/SearchResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /article:
+    x-swagger-router-controller: v1
+    post:
+      tags:
+        - v1
+        - web-ui
+      description: >-
+        Used to provide Journal Watch website with HTML to display an individual
+        article.
+      operationId: article
+      parameters:
+        - name: Authorization
+          in: header
+          description: >-
+            The session token returned by Authentication API authenticate
+            method.
+          required: false
+          type: string
+        - name: body
+          in: body
+          description: >-
+            Object containing the parameters request an article.  See the
+            ArticleBody definition for more information on expected inputs.
+          required: true
+          schema:
+            $ref: '#/definitions/ArticleBody'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/ArticleResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /login:
+    x-swagger-router-controller: v1
+    post:
+      tags:
+        - v1
+        - web-ui
+      description: >-
+        Logs a user in with a given email and password, if no email or password
+        is provided user is logged in anonymously.
+      operationId: login
+      parameters:
+        - name: body
+          in: body
+          description: Object that contains the email and password.
+          required: true
+          schema:
+            $ref: '#/definitions/LoginBody'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/LoginResponse'
+        '302':
+          description: 302 response
+          headers:
+            Location:
+              type: string
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /athensLogin:
+    x-swagger-router-controller: v1
+    post:
+      consumes:
+        - application/x-www-form-urlencoded
+      tags:
+        - v1
+      description: >-
+        After the user visits the OpenAthens login page and enters their
+        credentials, the payload containing FedID is redirected to this
+        endpoint, which authenticates the user and then sets their cookies
+      operationId: loginAthens
+      parameters:
+        - name: body
+          in: body
+          description: Contains the encoded Fedid
+          schema:
+            $ref: '#/definitions/AthensBody'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/LoginResponse'
+        '302':
+          description: 302 response
+          headers:
+            Location:
+              type: string
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /azureLogin:
+    x-swagger-router-controller: v1
+    post:
+      consumes:
+        - application/x-www-form-urlencoded
+      tags:
+        - v1
+      description: >-
+        After the user visits the Azure login page and enters their credentials,
+        the payload is redirected to this endpoint, which authenticates the user
+        and then sets their cookies
+      operationId: loginAzure
+      parameters:
+        - name: body
+          in: body
+          description: Contains the origin url information
+          schema:
+            $ref: '#/definitions/AzureBody'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/LoginResponse'
+        '302':
+          description: 302 response
+          headers:
+            Location:
+              type: string
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /canAccess:
+    x-swagger-router-controller: v1
+    get:
+      tags:
+        - v1
+        - web-ui
+      description: Determines if the requesting user has access to resource
+      operationId: canAccess
+      parameters:
+        - name: type
+          in: query
+          type: string
+          required: true
+        - name: identifier
+          in: query
+          type: string
+          required: true
+        - name: Authorization
+          in: header
+          description: >-
+            The session token returned by Authentication API authenticate
+            method.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/LoginResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /refresh-token:
+    x-swagger-router-controller: v1
+    post:
+      tags:
+        - v1
+        - web-ui
+      description: Refreshes the current auth tokens expiration time.
+      operationId: refresh_token
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/RefreshTokenBody'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/LoginResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /getSpecialtyYears:
+    x-swagger-router-controller: v1
+    get:
+      tags:
+        - web-ui
+      operationId: getSpecialtyYears
+      description: Fetches a list of the years for the which the specialty has archives
+      parameters:
+        - name: specialty
+          in: query
+          required: true
+          type: string
+          enum:
+            - cardiology
+            - dermatology
+            - emergency-medicine
+            - gastroenterology
+            - general-medicine
+            - hiv-aids
+            - hospital-medicine
+            - infectious-diseases
+            - neurology
+            - oncology-and-hematology
+            - pediatrics-and-adolescent-medicine
+            - physicians-first-watch
+            - psychiatry
+            - womens-health
+        - name: Authorization
+          in: header
+          description: >-
+            The session token returned by Authentication API authenticate
+            method.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/PrintResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /getPrintIssues:
+    x-swagger-router-controller: v1
+    get:
+      tags:
+        - web-ui
+      operationId: getPrintIssues
+      description: Fetches a sorted list for a specialty and year
+      parameters:
+        - name: specialty
+          in: query
+          required: true
+          type: string
+          enum:
+            - cardiology
+            - dermatology
+            - emergency-medicine
+            - gastroenterology
+            - general-medicine
+            - hiv-aids
+            - hospital-medicine
+            - infectious-diseases
+            - neurology
+            - oncology-and-hematology
+            - pediatrics-and-adolescent-medicine
+            - physicians-first-watch
+            - psychiatry
+            - womens-health
+          description: The specialty whose archives you're looking for
+        - name: year
+          in: query
+          type: string
+          required: true
+          description: The year of publication for the original archive
+        - name: Authorization
+          in: header
+          description: >-
+            The session token returned by Authentication API authenticate
+            method.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/PrintResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+  /content-entries:
+    x-swagger-router-controller: content
+    get:
+      tags:
+        - v1
+        - web-ui
+        - content
+      description: Use to load contentful entries using content id.
+      operationId: contentfulEntries
+      parameters:
+        - name: contentID
+          in: query
+          type: string
+          description: Content ID defined in Contentful
+          required: false
+        - name: contentType
+          in: query
+          type: string
+          description: Content type defined in Contentful.
+          required: true
+        - name: include
+          in: query
+          type: number
+          description: Number of links to resolve.
+          default: 10
+          required: false
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/ContentEntriesSuccessResponse'
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/ContentEntriesErrorResponse'
+  /v1/health:
+    x-swagger-router-controller: health
+    get:
+      tags:
+        - health
+      description: >-
+        This is the for jw-api api self-checking, including all above endpoints
+        and depended internal and resources. It returns "verified" and  "errors"
+        collections. Healthy jw-api should have empty errors collection.
+      operationId: index
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/SuccessHealthCheckResponse'
+        '500':
+          description: Error
+          schema:
+            $ref: '#/definitions/ErrorHealthCheckResponse'
+  /swagger:
+    x-swagger-pipe: swagger_raw
+    get:
+      tags:
+        - Swagger
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: 200 response
+          schema:
+            $ref: '#/definitions/SwaggerInfo'
+definitions:
+  SwaggerInfo:
+    type: object
+  ArticleBody:
+    required:
+      - doi
+    properties:
+      doi:
+        type: string
+        description: >-
+          Article doi to fetch HTML for, Example; 10.1056/nejm-jw.NA43423. Note
+          you must be logged in order for this call to work.
+      tflkey:
+        type: string
+        description: Toll Free Link Key that provides access for valid articles.
+      referrer:
+        type: string
+        description: HTTP referrer that is required to validate some tflkeys.
+  ContentEntriesSuccessResponse:
+    description: Model used when contenntful lookup is successful.
+    properties:
+      sys:
+        type: object
+      total:
+        type: number
+      skip:
+        type: number
+      limit:
+        type: number
+      items:
+        type: array
+        items:
+          type: object
+      includes:
+        type: object
+  ContentEntriesErrorResponse:
+    description: Model used when contenntful lookup failed.
+    properties:
+      sys:
+        type: object
+      total:
+        type: number
+      skip:
+        type: number
+      limit:
+        type: number
+      errors:
+        type: array
+        items:
+          type: object
+  SearchResponse:
+    properties:
+      status:
+        type: string
+      data:
+        $ref: '#/definitions/SearchResponseData'
+  SearchResponseData:
+    properties:
+      total:
+        description: Total number of articles that match the search request.
+        type: number
+      start:
+        description: Starting index of the articles being returned.
+        type: number
+      pageLength:
+        description: >-
+          Page length of the results being returned, can be used to check if we
+          have anymore data for UI paging.
+        type: number
+      result:
+        description: An array of articles that match the search request.
+        type: array
+        items:
+          $ref: '#/definitions/SearchArticle'
+  SearchArticle:
+    properties:
+      created:
+        type: string
+        format: date
+      embargo:
+        type: string
+        format: date
+      status:
+        type: string
+      pubdate:
+        type: string
+        format: date
+      doi:
+        type: string
+      id:
+        type: string
+      title:
+        type: string
+      uri:
+        type: string
+      abstracts:
+        type: object
+      specialities:
+        type: object
+      free:
+        type: boolean
+      authors:
+        type: object
+      reviewed-articles:
+        type: object
+  ArticleResponse:
+    type: string
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  LoginBody:
+    properties:
+      email:
+        description: Email of the user that we are attempting to log in with.
+        type: string
+        example: user@domain.com
+      password:
+        description: Password of the user that we are attempting to log in with.
+        type: string
+        example: password
+  AthensBody:
+    properties:
+      authnObj:
+        description: Encoded body
+        type: string
+        format: byte
+  LoginResponse:
+    properties:
+      token:
+        description: >-
+          Session token to be stored in a cookie and used in subsequent API
+          calls to verify access.
+        type: string
+  RefreshTokenBody:
+    required:
+      - token
+    properties:
+      token:
+        type: string
+  PrintResponse:
+    required:
+      - message
+    properties:
+      data:
+        type: array
+        items:
+          type: string
+      message:
+        type: string
+  SuccessHealthCheckResponse:
+    type: object
+    required:
+      - status
+      - data
+    properties:
+      status:
+        type: string
+        enum:
+          - success
+      data:
+        type: object
+  ErrorHealthCheckResponse:
+    type: object
+    required:
+      - code
+      - message
+      - status
+    properties:
+      status:
+        type: string
+        enum:
+          - error
+      message:
+        type: string
+      code:
+        type: string
+      data:
+        type: object
+  AzureBody:
+    properties:
+      organizationId:
+        description: user institution info
+        type: string
+      azureToken:
+        description: token
+        type: string

@@ -1,0 +1,88 @@
+{
+  "name": "jw-api",
+  "version": "3.0.2",
+  "private": true,
+  "description": "An API used for the Journal Watch website",
+  "keywords": [],
+  "author": "MMS",
+  "license": "",
+  "main": "app.js",
+  "type": "module",
+  "dependencies": {
+    "api-util": "github:massmedicalsociety/api-util#v3.0.0",
+    "atob": "^2.1.1",
+    "aws-sdk": "^2.286.2",
+    "axios": "^0.21.1",
+    "bluebird": "^3.7.2",
+    "config": "github:massmedicalsociety/config#v3.0.1",
+    "contentful": "^6.1.2",
+    "cookie": "^0.3.1",
+    "correlation-id-mw": "github:massmedicalsociety/correlation-id-mw#v3.0.0",
+    "cors": "^2.8.4",
+    "error-handler-mw": "github:massmedicalsociety/error-handler-mw#v3.0.0",
+    "express": "^4.17.1",
+    "jsend-decorator": "github:massmedicalsociety/jsend-decorator#v3.0.0",
+    "jsonwebtoken": "^8.3.0",
+    "logger": "github:massmedicalsociety/logger#v6.0.3",
+    "newrelic": "^6.5.0",
+    "redis": "^2.8.0",
+    "swagger-tools": "^0.10.4",
+    "swagger-ui-express": "^4.1.6",
+    "xmldom": "^0.5.0",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "mocha": "^8.2.1",
+    "should": "^13.2.3",
+    "supertest": "^3.1.0",
+    "xo": "^0.37.1"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "lint": "xo",
+    "test": "npm run lint && swagger project test",
+    "preversion": "npm test",
+    "postversion": "git push && git push --tags"
+  },
+  "configRequired": [
+    "ML_API_URI",
+    "ML_SEARCH_API_KEY",
+    "ML_CONTENT_API_KEY",
+    "AUTHN_API_URI",
+    "AUTHZ_API_URI",
+    "S3_BUCKET_HEALTHCHECK_URI",
+    "NODEJS_HEALTHCHECK_CONTENT_TRANFORM_API",
+    "HEALTHCHECK_APIG_JWAPI_URI",
+    "X_API_KEY_HEALTHCHECK_LOGIN",
+    "CONTENTFUL_HOST",
+    "HEALTH_CHECK_USERNAME",
+    "HEALTH_CHECK_PASSWORD",
+    "JW_WEB_CLIENT_ID",
+    "HEALTH_CHECK_ARTICLE",
+    "LOG_CONSOLE",
+    "LOG_SPLUNK",
+    "LOG_LEVEL",
+    "NEW_RELIC_APP_NAME",
+    "NEW_RELIC_LICENSE_KEY"
+  ],
+  "xo": {
+    "env": [
+      "node",
+      "mocha"
+    ],
+    "overrides": [
+      {
+        "files": "test/**/*.js",
+        "rules": {
+          "max-nested-callbacks": [
+            "warn",
+            10
+          ]
+        }
+      }
+    ],
+    "rules": {
+      "linebreak-style": "off"
+    }
+  }
+}

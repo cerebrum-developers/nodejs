@@ -1,0 +1,5 @@
+environment   = "awsproduction"
+region        = "us-east-1"
+clientCertId  = "y4j0nv"
+domainName    = "api-production.nejmgroup.org"
+nodeApiDomain = "jw-api.nejmgroup-production.org"

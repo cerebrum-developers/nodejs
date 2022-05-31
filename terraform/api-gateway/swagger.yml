@@ -1,0 +1,1004 @@
+---
+swagger: "2.0"
+info:
+  version: "2.0.0"
+  title: ${apiName}
+  description: ${apiDescription}
+host: ${domainName}
+basePath: "/${apiPath}"
+schemes:
+- "https"
+paths:
+  /alert:
+    post:
+      operationId: "generateAlert"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "AlertRequest"
+        required: true
+        schema:
+          $ref: "#/definitions/AlertRequest"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/AlertResponse"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      security:
+      - api_key: []
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: "https://${nodeApiDomain}/alert"
+        responses:
+          "200":
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        httpMethod: "OPTIONS"
+        uri: "https://${nodeApiDomain}/alert"
+        responses:
+          "200":
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+  /alertlist:
+    get:
+      operationId: "alertList"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/StringResponse"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      security:
+      - api_key: []
+      x-amazon-apigateway-integration:
+        httpMethod: "GET"
+        uri: "https://${nodeApiDomain}/alertlist"
+        responses:
+          "200":
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        httpMethod: "OPTIONS"
+        uri: "https://${nodeApiDomain}/alertlist"
+        responses:
+          "200":
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+  /article:
+    post:
+      operationId: "article"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "ArticleBody"
+        required: true
+        schema:
+          $ref: "#/definitions/ArticleBody"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/ArticleResponse"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      security:
+      - api_key: []
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: "https://${nodeApiDomain}/article"
+        responses:
+          "200":
+            statusCode: "200"
+        requestParameters:
+          integration.request.header.Authorization: "method.request.header.Authorization"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        httpMethod: "OPTIONS"
+        uri: "https://${nodeApiDomain}/article"
+        responses:
+          "200":
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+  /athensLogin:
+    post:
+      operationId: "loginAthens"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "AthensBody"
+        required: true
+        schema:
+          $ref: "#/definitions/AthensBody"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/LoginResponse"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        "302":
+          description: "302 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Set-Cookie:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+            Location:
+              type: "string"
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: "https://${nodeApiDomain}/athensLogin"
+        responses:
+          "200":
+            statusCode: "200"
+          "302":
+            statusCode: "302"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        httpMethod: "OPTIONS"
+        uri: "https://${nodeApiDomain}/athensLogin"
+        responses:
+          "200":
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+  /azureLogin:
+    post:
+      operationId: "loginAzure"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "AzureBody"
+        required: true
+        schema:
+          $ref: "#/definitions/AzureBody"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/LoginResponse"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        "302":
+          description: "302 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Set-Cookie:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+            Location:
+              type: "string"
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: "https://${nodeApiDomain}/azureLogin"
+        responses:
+          "200":
+            statusCode: "200"
+          "302":
+            statusCode: "302"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        httpMethod: "OPTIONS"
+        uri: "https://${nodeApiDomain}/azureLogin"
+        responses:
+          "200":
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+  /canAccess:
+    get:
+      operationId: "canAccess"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "type"
+        in: "query"
+        required: true
+        type: "string"
+      - name: "identifier"
+        in: "query"
+        required: true
+        type: "string"
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/LoginResponse"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      security:
+      - api_key: []
+      x-amazon-apigateway-integration:
+        httpMethod: "GET"
+        uri: "https://${nodeApiDomain}/canAccess"
+        responses:
+          "200":
+            statusCode: "200"
+        requestParameters:
+          integration.request.header.Authorization: "method.request.header.Authorization"
+          integration.request.querystring.type: "method.request.querystring.type"
+          integration.request.querystring.identifier: "method.request.querystring.identifier"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        httpMethod: "OPTIONS"
+        uri: "https://${nodeApiDomain}/canAccess"
+        responses:
+          "200":
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+  /content-entries:
+    get:
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+      security:
+      - api_key: []
+      x-amazon-apigateway-integration:
+        httpMethod: "GET"
+        uri: "https://${nodeApiDomain}/content-entries"
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+    options:
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/Empty"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        httpMethod: "OPTIONS"
+        uri: "https://${nodeApiDomain}/content-entries"
+        responses:
+          default:
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+  /getPrintIssues:
+    get:
+      operationId: "getPrintIssues"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "year"
+        in: "query"
+        required: true
+        type: "string"
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "specialty"
+        in: "query"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/PrintResponse"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      security:
+      - api_key: []
+      x-amazon-apigateway-integration:
+        httpMethod: "GET"
+        uri: "https://${nodeApiDomain}/getPrintIssues"
+        responses:
+          "200":
+            statusCode: "200"
+        requestParameters:
+          integration.request.header.Authorization: "method.request.header.Authorization"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        httpMethod: "OPTIONS"
+        uri: "https://${nodeApiDomain}/getPrintIssues"
+        responses:
+          "200":
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+  /getSpecialtyYears:
+    get:
+      operationId: "getSpecialtyYears"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "Authorization"
+        in: "header"
+        required: true
+        type: "string"
+      - name: "specialty"
+        in: "query"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/PrintResponse"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      security:
+      - api_key: []
+      x-amazon-apigateway-integration:
+        httpMethod: "GET"
+        uri: "https://${nodeApiDomain}/getSpecialtyYears"
+        responses:
+          "200":
+            statusCode: "200"
+        requestParameters:
+          integration.request.header.Authorization: "method.request.header.Authorization"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        httpMethod: "OPTIONS"
+        uri: "https://${nodeApiDomain}/getSpecialtyYears"
+        responses:
+          "200":
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+  /login:
+    post:
+      operationId: "login"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "LoginBody"
+        required: true
+        schema:
+          $ref: "#/definitions/LoginBody"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/LoginResponse"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+        "302":
+          description: "302 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+            Location:
+              type: "string"
+      security:
+      - api_key: []
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: "https://${nodeApiDomain}/login"
+        responses:
+          "200":
+            statusCode: "200"
+          "302":
+            statusCode: "302"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        httpMethod: "OPTIONS"
+        uri: "https://${nodeApiDomain}/login"
+        responses:
+          "200":
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+  /refresh-token:
+    post:
+      operationId: "refresh_token"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "RefreshTokenBody"
+        required: true
+        schema:
+          $ref: "#/definitions/RefreshTokenBody"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/LoginResponse"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      security:
+      - api_key: []
+      x-amazon-apigateway-integration:
+        httpMethod: "POST"
+        uri: "https://${nodeApiDomain}/refresh-token"
+        responses:
+          "200":
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        httpMethod: "OPTIONS"
+        uri: "https://${nodeApiDomain}/refresh-token"
+        responses:
+          "200":
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+  /search:
+    get:
+      operationId: "search"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "start"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "query"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "pageLength"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "sort"
+        in: "query"
+        required: false
+        type: "string"
+      - name: "order"
+        in: "query"
+        required: false
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/SearchResponse"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      security:
+      - api_key: []
+      x-amazon-apigateway-integration:
+        httpMethod: "GET"
+        uri: "https://${nodeApiDomain}/search"
+        responses:
+          default:
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_match"
+        cacheNamespace: "db9yj8"
+        cacheKeyParameters:
+        - "method.request.querystring.order"
+        - "method.request.querystring.pageLength"
+        - "method.request.querystring.sort"
+        - "method.request.querystring.start"
+        - "method.request.querystring.query"
+        type: "http_proxy"
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        httpMethod: "OPTIONS"
+        uri: "https://${nodeApiDomain}/search"
+        responses:
+          "200":
+            statusCode: "200"
+            responseParameters:
+              method.response.header.Access-Control-Allow-Methods: "'GET,OPTIONS'"
+              method.response.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,Cache-Control,If-None-Match'"
+              method.response.header.Access-Control-Allow-Origin: "'*'"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+  /swagger:
+    get:
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/SwaggerJSON"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      security:
+      - api_key: []
+      x-amazon-apigateway-integration:
+        httpMethod: "GET"
+        uri: "https://${nodeApiDomain}/swagger"
+        responses:
+          "200":
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        httpMethod: "OPTIONS"
+        uri: "https://${nodeApiDomain}/swagger"
+        responses:
+          "200":
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+  /whatcounts/{id}:
+    get:
+      operationId: "whatCountsArticle"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/StringResponse"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      security:
+      - api_key: []
+      x-amazon-apigateway-integration:
+        httpMethod: "GET"
+        uri: "https://${nodeApiDomain}/whatcounts/{id}"
+        responses:
+          "200":
+            statusCode: "200"
+        requestParameters:
+          integration.request.path.id: "method.request.path.id"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+    options:
+      responses:
+        "200":
+          description: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+            Access-Control-Allow-Methods:
+              type: "string"
+            Access-Control-Allow-Headers:
+              type: "string"
+      x-amazon-apigateway-integration:
+        httpMethod: "OPTIONS"
+        uri: "https://${nodeApiDomain}/whatcounts/{id}"
+        responses:
+          "200":
+            statusCode: "200"
+        passthroughBehavior: "when_no_match"
+        type: "http_proxy"
+securityDefinitions:
+  api_key:
+    type: "apiKey"
+    name: "x-api-key"
+    in: "header"
+definitions:
+  RefreshTokenBody:
+    required:
+    - "token"
+    properties:
+      token:
+        type: "string"
+  LoginResponse:
+    properties:
+      token:
+        type: "string"
+        description: "Session token to be stored in a cookie and used in subsequent\
+          \ API calls to verify access."
+  AlertResponse:
+    required:
+    - "success"
+    properties:
+      success:
+        type: "boolean"
+      message:
+        type: "string"
+      emailContent:
+        type: "string"
+  ArticleResponse:
+    type: "string"
+  LoginBody:
+    properties:
+      email:
+        type: "string"
+        description: "Email of the user that we are attempting to log in with."
+      password:
+        type: "string"
+        description: "Password of the user that we are attempting to log in with."
+  SearchResponseData:
+    properties:
+      total:
+        type: "number"
+        description: "Total number of articles that match the search request."
+      start:
+        type: "number"
+        description: "Starting index of the articles being returned."
+      pageLength:
+        type: "number"
+        description: "Page length of the results being returned, can be used to check\
+          \ if we have anymore data for UI paging."
+      result:
+        type: "array"
+        description: "An array of articles that match the search request."
+        items:
+          $ref: "#/definitions/SearchArticle"
+  SwaggerJSON:
+    type: "object"
+    title: "Swagger JSON"
+  AlertRequest:
+    properties:
+      type:
+        type: "string"
+        enum:
+        - "etoc"
+        - "full"
+      ver:
+        type: "string"
+        enum:
+        - "html"
+        - "text"
+      alertCode:
+        type: "string"
+        description: "alert specialty or topic"
+      fromDate:
+        type: "string"
+        description: "from date string, e.g. 2016-12-31"
+      toDate:
+        type: "string"
+        description: "to date string, e.g. 2017-12-31"
+      updateWhatCounts:
+        type: "boolean"
+        description: "true to save changes to whatcounts"
+  StringResponse:
+    type: "string"
+  SearchResponse:
+    properties:
+      status:
+        type: "string"
+      data:
+        $ref: "#/definitions/SearchResponseData"
+  Empty:
+    type: "object"
+    title: "Empty Schema"
+  PrintResponse:
+    required:
+    - "message"
+    properties:
+      data:
+        type: "array"
+        items:
+          type: "string"
+      message:
+        type: "string"
+  AthensBody:
+    properties:
+      authnObj:
+        type: "string"
+        format: "byte"
+        description: "Encoded body"
+  AzureBody:
+    properties:
+      organizationId:
+        description: user institution info
+        type: string
+      azureToken:
+        description: token
+        type: string
+  ArticleBody:
+    required:
+    - "doi"
+    properties:
+      doi:
+        type: "string"
+        description: "Article doi to fetch HTML for, Example; 10.1056/nejm-jw.NA43423.\
+          \ Note you must be logged in order for this call to work."
+      tflkey:
+        type: "string"
+        description: "Toll Free Link Key that provides access for valid articles."
+      referrer:
+        type: "string"
+        description: "HTTP referrer that is required to validate some tflkeys."
+  SearchArticle:
+    properties:
+      created:
+        type: "string"
+        format: "date"
+      embargo:
+        type: "string"
+        format: "date"
+      status:
+        type: "string"
+      pubdate:
+        type: "string"
+        format: "date"
+      doi:
+        type: "string"
+      id:
+        type: "string"
+      title:
+        type: "string"
+      uri:
+        type: "string"
+      abstracts:
+        type: "object"
+        properties: {}
+      specialities:
+        type: "object"
+        properties: {}
+      free:
+        type: "boolean"
+      authors:
+        type: "object"
+        properties: {}
+      reviewed-articles:
+        type: "object"
+        properties: {}
+x-amazon-apigateway-gateway-responses:
+  DEFAULT_4XX:
+    responseParameters:
+      gatewayresponse.header.Access-Control-Allow-Methods: "'HEAD,GET,OPTIONS'"
+      gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+      gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+  DEFAULT_5XX:
+    responseParameters:
+      gatewayresponse.header.Access-Control-Allow-Methods: "'HEAD,GET,OPTIONS'"
+      gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+      gatewayresponse.header.Access-Control-Allow-Headers: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
